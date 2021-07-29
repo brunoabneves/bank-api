@@ -33,4 +33,9 @@ public class UsuarioService {
 		return usuarioRepository.findAll();
 	}
 	
+	public Usuario buscar(Long usuarioId) {
+		return usuarioRepository.findById(usuarioId)
+				.orElseThrow(() -> new NegocioException("Usuário não encontrado."));
+	}
+	
 }

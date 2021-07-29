@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bruno.domain.exception.NegocioException;
 import com.bruno.domain.model.Usuario;
 import com.bruno.domain.repository.UsuarioRepository;
 
@@ -18,6 +19,13 @@ public class UsuarioService {
 	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
+		
+		Usuario usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+		
+		if (usuarioExistente != null) {
+			throw new NegocioException("Já existe um usuário cadastrado com este e-mail.");
+		}
+		
 		return usuarioRepository.save(usuario);
 	}
 	

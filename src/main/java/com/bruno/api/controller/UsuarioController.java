@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bruno.domain.model.Usuario;
-import com.bruno.domain.repository.UsuarioRepository;
+import com.bruno.domain.service.UsuarioService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,22 +22,21 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/users")
 public class UsuarioController {
-	
-	
-	private UsuarioRepository usuarioRepository;
+
+	private UsuarioService usuarioService;
 	
 	@GetMapping
 	@PreAuthorize("hasRole('USER')")
 	public List<Usuario> listar(){
 		
-		return usuarioRepository.findAll();
+		return usuarioService.listar();
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario cadastrar(@Valid @RequestBody Usuario usuario) {
-		return usuarioRepository.save(usuario);
+		return usuarioService.salvar(usuario);
 	}
 	
 }

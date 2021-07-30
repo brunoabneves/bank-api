@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bruno.api.assembler.ContaAssembler;
+import com.bruno.api.model.ContaModel;
+import com.bruno.api.model.input.ContaInput;
 import com.bruno.domain.model.Conta;
+import com.bruno.domain.model.Usuario;
+import com.bruno.domain.repository.UsuarioRepository;
 import com.bruno.domain.service.CadastroContaService;
 
 import lombok.AllArgsConstructor;
@@ -21,12 +26,18 @@ import lombok.AllArgsConstructor;
 public class ContaController {
 
 	private CadastroContaService cadastroContaService;
+	private UsuarioRepository usuarioRepository;
+	private ContaAssembler contaAssembler;
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Conta cadastrar(@Valid @RequestBody Conta conta) {
-		return cadastroContaService.salvar(conta);
+	public ContaModel cadastrar(@Valid @RequestBody ContaInput contaInput) {
+		
+		
+		Conta novaConta = contaAssembler.toEntity(contaInput);
+		
+		return contaAssembler.toModel(cadastroContaService.salvar(novaConta));
 	}
 	
 }

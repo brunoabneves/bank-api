@@ -1,7 +1,5 @@
 package com.bruno.domain.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +25,6 @@ public class UsuarioService {
 		}
 		
 		return usuarioRepository.save(usuario);
-	}
-	
-	public List<Usuario> listar() {
-		return usuarioRepository.findAll();
 	}
 	
 	public Usuario buscar(Long usuarioId) {

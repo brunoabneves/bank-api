@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bruno.api.assembler.UsuarioAssembler;
+import com.bruno.api.model.UsuarioModel;
+import com.bruno.api.model.input.UsuarioInput;
 import com.bruno.domain.model.Usuario;
+import com.bruno.domain.repository.UsuarioRepository;
 import com.bruno.domain.service.UsuarioService;
 
 import lombok.AllArgsConstructor;
@@ -24,19 +28,20 @@ import lombok.AllArgsConstructor;
 public class UsuarioController {
 
 	private UsuarioService usuarioService;
+	private UsuarioRepository usuarioRepository;
+	private UsuarioAssembler usuarioAssembler;
 	
 	@GetMapping
 	@PreAuthorize("hasRole('USER')")
-	public List<Usuario> listar(){
-		
-		return usuarioService.listar();
+	public List<UsuarioModel> listar() {
+		return usuarioAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario cadastrar(@Valid @RequestBody Usuario usuario) {
-		return usuarioService.salvar(usuario);
+	public UsuarioModel cadastrar (@Valid @RequestBody UsuarioInput usuarioInput) {
+		Usuario novoUsuario = usuarioAssembler.toEntity(usuarioInput);
+		return usuarioAssembler.toModel(usuarioService.salvar(novoUsuario));
 	}
-	
 }

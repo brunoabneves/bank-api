@@ -15,7 +15,6 @@ import com.bruno.api.model.ContaModel;
 import com.bruno.api.model.input.ContaInput;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Usuario;
-import com.bruno.domain.repository.UsuarioRepository;
 import com.bruno.domain.service.CadastroContaService;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ import lombok.AllArgsConstructor;
 public class ContaController {
 
 	private CadastroContaService cadastroContaService;
-	private UsuarioRepository usuarioRepository;
 	private ContaAssembler contaAssembler;
 	
 	@PostMapping
@@ -34,8 +32,10 @@ public class ContaController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ContaModel cadastrar(@Valid @RequestBody ContaInput contaInput) {
 		
+		Usuario usuario = cadastroContaService.getUsuarioLogado();
 		
 		Conta novaConta = contaAssembler.toEntity(contaInput);
+		novaConta.setUsuario(usuario);
 		
 		return contaAssembler.toModel(cadastroContaService.salvar(novaConta));
 	}

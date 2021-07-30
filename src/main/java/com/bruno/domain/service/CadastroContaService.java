@@ -11,6 +11,7 @@ import com.bruno.domain.exception.NegocioException;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Usuario;
 import com.bruno.domain.repository.ContaRepository;
+import com.bruno.domain.repository.UsuarioRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -19,12 +20,13 @@ import lombok.AllArgsConstructor;
 public class CadastroContaService {
 	
 	private ContaRepository contaRepository;
+	private UsuarioRepository usuarioRepository;
 	private UsuarioService usuarioService;
 	
 	@Transactional
 	public Conta salvar(Conta conta) {
 		
-		Usuario usuario = usuarioService.buscar(conta.getUsuario().getId());
+		//Usuario usuario = usuarioService.buscar(conta.getUsuario().getId());
 		
 		Conta contaExistente = contaRepository.findByNumero(conta.getNumero());
 		
@@ -37,6 +39,21 @@ public class CadastroContaService {
 		}
 		
 		return contaRepository.save(conta);
+	}
+	
+	public Usuario getUsuarioLogado() {
+		
+		Object usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		String username; 
+		if (usuarioLogado instanceof UserDetails ) { 
+			username= ( (UserDetails)usuarioLogado).getUsername(); 
+		} else { 
+			username = usuarioLogado .toString(); 
+		}
+		
+		Usuario usuario = usuarioRepository.findByEmail(username);
+		
+		return usuario;
 	}
  
 }

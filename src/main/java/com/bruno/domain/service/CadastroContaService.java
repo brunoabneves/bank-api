@@ -21,7 +21,7 @@ public class CadastroContaService {
 	
 	private ContaRepository contaRepository;
 	private UsuarioRepository usuarioRepository;
-	private UsuarioService usuarioService;
+	//private UsuarioService usuarioService;
 	
 	@Transactional
 	public Conta salvar(Conta conta) {

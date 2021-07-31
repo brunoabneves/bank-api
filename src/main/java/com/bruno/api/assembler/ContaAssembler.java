@@ -1,8 +1,8 @@
 package com.bruno.api.assembler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Component
 public class ContaAssembler {
 
-private ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 	
 	public ContaModel toModel(Conta conta) {
 		return modelMapper.map(conta, ContaModel.class);
@@ -40,7 +40,7 @@ private ModelMapper modelMapper;
 		return modelMapper.map(contaInput, Conta.class);
 	}
 
-	public Conta toEntity(Optional<Conta> conta) {
+	public Conta toEntity(Stream<Conta> conta) {
 		return modelMapper.map(conta, Conta.class);
 	}
 	

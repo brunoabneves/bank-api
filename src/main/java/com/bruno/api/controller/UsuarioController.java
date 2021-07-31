@@ -38,7 +38,6 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasRole('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel cadastrar (@Valid @RequestBody UsuarioInput usuarioInput) {
 		Usuario novoUsuario = usuarioAssembler.toEntity(usuarioInput);

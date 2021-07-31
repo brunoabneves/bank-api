@@ -21,7 +21,6 @@ public class CadastroContaService {
 	
 	private ContaRepository contaRepository;
 	private UsuarioRepository usuarioRepository;
-	//private UsuarioService usuarioService;
 	
 	@Transactional
 	public Conta salvar(Conta conta) {
@@ -54,12 +53,6 @@ public class CadastroContaService {
 		Usuario usuario = usuarioRepository.findByEmail(username);
 		
 		return usuario;
-	}
-	
-	public BigDecimal exibirSaldo(String numeroConta) {
-		Conta conta = contaRepository.findByNumero(numeroConta);
-		
-		return conta.getSaldo();
 	}
  
 }

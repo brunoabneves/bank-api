@@ -58,7 +58,7 @@ public class ContaController {
 		transacaoInput.setUsuario(usuario);
 
 		Conta contaOrigem = transacaoService.contaExisteParaUsuario(transacaoInput.getContaOrigem());
-		Conta contaDestino = contaRepository.findByNumero(transacaoInput.getContaDestino());
+		Conta contaDestino = transacaoService.encontraContaDestino(transacaoInput.getContaDestino());
 		
 		transacaoService.transacao(contaOrigem, contaDestino, transacaoInput.getValor());
 		

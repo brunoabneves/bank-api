@@ -36,7 +36,21 @@ public class TransacaoService {
 		
 	}
 	
+	public Conta encontraContaDestino(String contaDestino) {
+		Conta contaExiste = contaRepository.findByNumero(contaDestino);
+		
+		if(contaExiste == null) {
+			throw new NegocioException("Conta destino não encontrada.");
+		}
+		
+		return contaExiste;
+	}
+	
 	public void transacao(Conta contaOrigem, Conta contaDestino, BigDecimal valor) {
+		
+		testaValor(valor);
+		testaSaldoConta(contaOrigem, valor);
+		
 		contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(valor));
 		contaDestino.setSaldo(contaDestino.getSaldo().add(valor));
 		
@@ -46,6 +60,19 @@ public class TransacaoService {
 				
 		contaRepository.save(contaOrigem);
 		contaRepository.save(contaDestino);
+	}
+	
+	public void testaSaldoConta(Conta conta, BigDecimal valor) {
+		
+		if(valor.compareTo(conta.getSaldo()) == 1) {
+			throw new NegocioException("Saldo insuficiente na conta de origem.");
+		}
+	}
+	
+	public void testaValor(BigDecimal valor) {
+		if(valor.compareTo(BigDecimal.ZERO) < 0) {
+			throw new NegocioException("Valor deve ser maior que zero.");
+		}
 	}
 
 }

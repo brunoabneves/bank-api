@@ -22,9 +22,7 @@ public class TransacaoService {
 	@Transactional
 	public Conta contaExisteParaUsuario(String contaOrigem) {
 		
-		Usuario usuario = cadastroContaService.getUsuarioLogado();
-		
-		Conta contaExiste = contaRepository.findByUsuarioIdAndNumero(usuario.getId(), contaOrigem);
+		Conta contaExiste = buscaPorUsuarioLogadoAndConta(contaOrigem);
 		
 		//Stream<Conta> contaExiste = contas.stream().filter(conta -> conta.getNumero().equals(contaOrigem));
 		
@@ -73,6 +71,16 @@ public class TransacaoService {
 		if(valor.compareTo(BigDecimal.ZERO) < 0) {
 			throw new NegocioException("Valor deve ser maior que zero.");
 		}
+	}
+	
+	public Conta buscaPorUsuarioLogadoAndConta(String contaOrigem) {
+		
+		Usuario usuario = cadastroContaService.getUsuarioLogado();
+		
+		Conta conta = contaRepository.findByUsuarioIdAndNumero(usuario.getId(), contaOrigem);
+		
+		return conta;
+		
 	}
 
 }

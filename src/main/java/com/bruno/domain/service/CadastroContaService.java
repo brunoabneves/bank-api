@@ -55,5 +55,11 @@ public class CadastroContaService {
 		
 		return usuario;
 	}
+	
+	public BigDecimal exibirSaldo(String numeroConta) {
+		Conta conta = contaRepository.findByNumero(numeroConta);
+		
+		return conta.getSaldo();
+	}
  
 }

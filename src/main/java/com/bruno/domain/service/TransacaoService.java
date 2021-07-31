@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bruno.api.assembler.ContaAssembler;
 import com.bruno.domain.exception.NegocioException;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Usuario;
@@ -19,7 +18,6 @@ public class TransacaoService {
 	
 	private CadastroContaService cadastroContaService;
 	private ContaRepository contaRepository;
-	private ContaAssembler contaAssembler;
 	
 	@Transactional
 	public Conta contaExisteParaUsuario(String contaOrigem) {

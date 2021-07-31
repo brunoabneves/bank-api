@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bruno.api.assembler.ContaAssembler;
+import com.bruno.api.assembler.TransacaoAssembler;
 import com.bruno.api.model.ContaModel;
+import com.bruno.api.model.TransacaoModel;
 import com.bruno.api.model.input.ContaInput;
+import com.bruno.api.model.input.TransacaoInput;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Transacao;
 import com.bruno.domain.model.Usuario;
@@ -33,6 +36,7 @@ public class ContaController {
 	private ContaAssembler contaAssembler;
 	private TransacaoService transacaoService;
 	private ContaRepository contaRepository;
+	private TransacaoAssembler transacaoAssembler;
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
@@ -49,14 +53,16 @@ public class ContaController {
 	
 	@PutMapping("/transfer")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Transacao> transacaoEntreContas(@RequestBody Transacao transacao) {
+	public ResponseEntity<TransacaoModel> transacaoEntreContas(@RequestBody Transacao transacaoInput) {
+		Usuario usuario = cadastroContaService.getUsuarioLogado();
+		transacaoInput.setUsuario(usuario);
 
-		Conta contaOrigem = transacaoService.contaExisteParaUsuario(transacao.getContaOrigem());
-		Conta contaDestino = contaRepository.findByNumero(transacao.getContaDestino());
+		Conta contaOrigem = transacaoService.contaExisteParaUsuario(transacaoInput.getContaOrigem());
+		Conta contaDestino = contaRepository.findByNumero(transacaoInput.getContaDestino());
 		
-		transacaoService.transacao(contaOrigem, contaDestino, transacao.getValor());
+		transacaoService.transacao(contaOrigem, contaDestino, transacaoInput.getValor());
 		
-		return ResponseEntity.ok(transacao);
+		return ResponseEntity.ok(transacaoAssembler.toModel(transacaoInput));
 	}
 	
 }

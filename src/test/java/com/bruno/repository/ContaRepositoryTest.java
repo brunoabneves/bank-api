@@ -1,5 +1,7 @@
 package com.bruno.repository;
 
+import javax.validation.ConstraintViolationException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -92,6 +94,54 @@ public class ContaRepositoryTest {
 		Conta conta = this.contaRepository.findByUsuarioIdAndNumero(1L,"1234-8");
 		
 		Assertions.assertThat(conta).isNull();
+	}
+	
+	@Test
+	@DisplayName("Salvar throw ConstraintViolationException quando número está em branco")
+	void save_ThrowConstraintViolationException_QuandoNomeEmBranco() {
+		
+		Conta conta = ContaCreator.criaConta(usuarioSalvo());
+		conta.setNumero("");
+		
+		Assertions.assertThatThrownBy(() -> this.contaRepository.save(conta))
+				.isInstanceOf(ConstraintViolationException.class);
+
+	}
+	
+	@Test
+	@DisplayName("Salvar throw ConstraintViolationException quando ultrapassa limite do size do número")
+	void save_ThrowConstraintViolationException_QuandoSizeNumeroUltrapassaLimite() {
+		
+		Conta conta = ContaCreator.criaConta(usuarioSalvo());
+		conta.setNumero("asdfffa");
+		
+		Assertions.assertThatThrownBy(() -> this.contaRepository.save(conta))
+				.isInstanceOf(ConstraintViolationException.class);
+
+	}
+	
+	@Test
+	@DisplayName("Salvar throw ConstraintViolationException quando número não atinge limite mínimo de caracteres")
+	void save_ThrowConstraintViolationException_QuandoNumeroNaoAtingeCaracteresMinimos() {
+		
+		Conta conta = ContaCreator.criaConta(usuarioSalvo());
+		conta.setNumero("asff");
+		
+		Assertions.assertThatThrownBy(() -> this.contaRepository.save(conta))
+				.isInstanceOf(ConstraintViolationException.class);
+
+	}
+	
+	@Test
+	@DisplayName("Salvar throw ConstraintViolationException quando saldo é nulo")
+	void save_ThrowConstraintViolationException_QuandoSaldoNulo() {
+		
+		Conta conta = ContaCreator.criaConta(usuarioSalvo());
+		conta.setSaldo(null);
+		
+		Assertions.assertThatThrownBy(() -> this.contaRepository.save(conta))
+				.isInstanceOf(ConstraintViolationException.class);
+
 	}
 	
 	Usuario usuarioSalvo() {

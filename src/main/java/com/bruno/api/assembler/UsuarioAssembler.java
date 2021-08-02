@@ -42,4 +42,11 @@ public class UsuarioAssembler {
 	public Usuario toEntity(UsuarioModel usuarioModel) {
 		return modelMapper.map(usuarioModel, Usuario.class);
 	}
+
+	public List<Usuario> toCollectionEntity(List<UsuarioModel> usuarios) {
+		
+		return usuarios.stream()
+				.map(this::toEntity)
+				.collect(Collectors.toList());
+	}
 }

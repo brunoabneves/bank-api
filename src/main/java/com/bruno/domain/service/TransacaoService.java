@@ -15,9 +15,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class TransacaoService {
-	
-	private CadastroContaService cadastroContaService;
+
 	private ContaRepository contaRepository;
+	private UsuarioService usuarioService;
 	
 	@Transactional
 	public Conta contaExisteParaUsuario(String contaOrigem) {
@@ -75,7 +75,7 @@ public class TransacaoService {
 	
 	public Conta buscaPorUsuarioLogadoAndConta(String contaOrigem) {
 		
-		Usuario usuario = cadastroContaService.getUsuarioLogado();
+		Usuario usuario = usuarioService.getUsuarioLogado();
 		
 		Conta conta = contaRepository.findByUsuarioIdAndNumero(usuario.getId(), contaOrigem);
 		

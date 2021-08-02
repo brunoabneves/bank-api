@@ -25,6 +25,7 @@ import com.bruno.domain.model.Transacao;
 import com.bruno.domain.model.Usuario;
 import com.bruno.domain.service.CadastroContaService;
 import com.bruno.domain.service.TransacaoService;
+import com.bruno.domain.service.UsuarioService;
 
 import lombok.AllArgsConstructor;
 
@@ -38,13 +39,14 @@ public class ContaController {
 	private TransacaoService transacaoService;
 	private TransacaoAssembler transacaoAssembler;
 	private ContaSaldoAssembler contaSaldoAssembler;
+	private UsuarioService usuarioService;
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ContaModel cadastrar(@Valid @RequestBody ContaInput contaInput) {
 		
-		Usuario usuario = cadastroContaService.getUsuarioLogado();
+		Usuario usuario = usuarioService.getUsuarioLogado();
 		
 		Conta novaConta = contaAssembler.toEntity(contaInput);
 		novaConta.setUsuario(usuario);
@@ -55,7 +57,7 @@ public class ContaController {
 	@PutMapping("/transfer")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<TransacaoModel> transacaoEntreContas(@RequestBody Transacao transacaoInput) {
-		Usuario usuario = cadastroContaService.getUsuarioLogado();
+		Usuario usuario = usuarioService.getUsuarioLogado();
 		transacaoInput.setUsuario(usuario);
 
 		Conta contaOrigem = transacaoService.contaExisteParaUsuario(transacaoInput.getContaOrigem());

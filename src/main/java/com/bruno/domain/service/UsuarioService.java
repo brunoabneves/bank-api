@@ -1,5 +1,9 @@
 package com.bruno.domain.service;
 
+import java.util.List;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +34,25 @@ public class UsuarioService {
 	public Usuario buscar(Long usuarioId) {
 		return usuarioRepository.findById(usuarioId)
 				.orElseThrow(() -> new NegocioException("Usuário não encontrado."));
+	}
+	
+	public List<Usuario> listarTodos(){
+		return usuarioRepository.findAll();
+	}
+	
+	public Usuario getUsuarioLogado() {
+		
+		Object usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		String username; 
+		if (usuarioLogado instanceof UserDetails ) { 
+			username= ( (UserDetails)usuarioLogado).getUsername(); 
+		} else { 
+			username = usuarioLogado .toString(); 
+		}
+		
+		Usuario usuario = usuarioRepository.findByEmail(username);
+		
+		return usuario;
 	}
 	
 }

@@ -18,7 +18,6 @@ import com.bruno.api.assembler.UsuarioAssembler;
 import com.bruno.api.controller.ContaController;
 import com.bruno.api.model.ContaModel;
 import com.bruno.api.model.ContaSaldoModel;
-import com.bruno.api.model.input.ContaSaldoInput;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.service.CadastroContaService;
 import com.bruno.domain.service.TransacaoService;

@@ -28,6 +28,8 @@ import com.bruno.domain.service.CadastroContaService;
 import com.bruno.domain.service.TransacaoService;
 import com.bruno.domain.service.UsuarioService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -44,6 +46,10 @@ public class ContaController {
 	
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "Bearer token",
+				required = true, dataType = "string", paramType = "header")
+	})
 	@ResponseStatus(HttpStatus.CREATED)
 	public ContaModel cadastrar(@Valid @RequestBody ContaInput contaInput) {
 		
@@ -56,6 +62,10 @@ public class ContaController {
 	}
 	
 	@PutMapping("/transfer")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "Bearer token",
+				required = true, dataType = "string", paramType = "header")
+	})
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<TransacaoModel> transacaoEntreContas(@RequestBody Transacao transacaoInput) {
 		Usuario usuario = usuarioService.getUsuarioLogado();
@@ -72,6 +82,10 @@ public class ContaController {
 	
 	@GetMapping("/balance")
 	@PreAuthorize("hasRole('USER')")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "Bearer token",
+				required = true, dataType = "string", paramType = "header")
+	})
 	public ContaSaldoModel exibirSaldo (@RequestBody ContaSaldoInput contaSaldoInput) {
 		
 		Conta conta = transacaoService.contaExisteParaUsuario(contaSaldoInput.getNumero());

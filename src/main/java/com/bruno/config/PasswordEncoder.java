@@ -6,7 +6,7 @@ public class PasswordEncoder {
 	public static void main(String[] args) {
 		
 		System.out.println("Senha encriptada:");
-		System.out.print(new BCryptPasswordEncoder().encode("senhateste"));
+		System.out.print(new BCryptPasswordEncoder().encode("senhateste2"));
 	}
 }
 

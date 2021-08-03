@@ -39,7 +39,7 @@ public class UsuarioControllerTest {
 			.thenReturn(List.of(UsuarioCreator.criaUsuarioModelValido()));
 		
 		BDDMockito.when(usuarioAssembler.toModel(usuarioService.salvar(ArgumentMatchers.any(Usuario.class))))
-        .thenReturn(UsuarioCreator.criaUsuarioModelValido());
+        	.thenReturn(UsuarioCreator.criaUsuarioModelValido());
 	}
 	
 	@Test

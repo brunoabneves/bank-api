@@ -20,6 +20,7 @@ import com.bruno.api.model.ContaModel;
 import com.bruno.api.model.ContaSaldoModel;
 import com.bruno.api.model.TransacaoModel;
 import com.bruno.api.model.input.ContaInput;
+import com.bruno.api.model.input.ContaSaldoInput;
 import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Transacao;
 import com.bruno.domain.model.Usuario;
@@ -47,9 +48,9 @@ public class ContaController {
 	public ContaModel cadastrar(@Valid @RequestBody ContaInput contaInput) {
 		
 		Usuario usuario = usuarioService.getUsuarioLogado();
+		contaInput.setUsuario(usuario);
 		
 		Conta novaConta = contaAssembler.toEntity(contaInput);
-		novaConta.setUsuario(usuario);
 		
 		return contaAssembler.toModel(cadastroContaService.salvar(novaConta));
 	}
@@ -71,9 +72,9 @@ public class ContaController {
 	
 	@GetMapping("/balance")
 	@PreAuthorize("hasRole('USER')")
-	public ContaSaldoModel exibirSaldo (@RequestBody ContaInput contaInput) {
+	public ContaSaldoModel exibirSaldo (@RequestBody ContaSaldoInput contaSaldoInput) {
 		
-		Conta conta = transacaoService.contaExisteParaUsuario(contaInput.getNumero());
+		Conta conta = transacaoService.contaExisteParaUsuario(contaSaldoInput.getNumero());
 		
 		return contaSaldoAssembler.toModel(conta);
 	}

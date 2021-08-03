@@ -1,6 +1,7 @@
 package com.bruno.api.assembler;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.bruno.api.model.TransacaoModel;
@@ -25,5 +26,9 @@ private ModelMapper modelMapper;
 	
 	public TransacaoModel toInputModel(TransacaoInput transacaoInput) {
 		return modelMapper.map(transacaoInput, TransacaoModel.class);
+	}
+
+	public TransacaoModel toModel(ResponseEntity<TransacaoModel> transacao) {
+		return modelMapper.map(transacao, TransacaoModel.class);
 	}
 }

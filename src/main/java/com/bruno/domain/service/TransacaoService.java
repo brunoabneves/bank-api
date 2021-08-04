@@ -19,7 +19,6 @@ public class TransacaoService {
 	private ContaRepository contaRepository;
 	private UsuarioService usuarioService;
 	
-	@Transactional
 	public Conta contaExisteParaUsuario(String contaOrigem) {
 		
 		Conta contaExiste = buscaPorUsuarioLogadoAndConta(contaOrigem);
@@ -44,6 +43,7 @@ public class TransacaoService {
 		return contaExiste;
 	}
 	
+	@Transactional
 	public void transacao(Conta contaOrigem, Conta contaDestino, BigDecimal valor) {
 		
 		testaValor(valor);

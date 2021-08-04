@@ -18,7 +18,7 @@ import com.bruno.domain.repository.UsuarioRepository;
 public class CustomUserDetailsService implements UserDetailsService{
 
 	
-	private final UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	public CustomUserDetailsService(UsuarioRepository usuarioRepository) {

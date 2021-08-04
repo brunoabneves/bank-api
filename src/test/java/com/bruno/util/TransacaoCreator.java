@@ -3,17 +3,21 @@ package com.bruno.util;
 import java.math.BigDecimal;
 
 import com.bruno.api.model.TransacaoModel;
+import com.bruno.domain.model.Conta;
 import com.bruno.domain.model.Transacao;
 
 public class TransacaoCreator {
 
-	public static Transacao criaTransacao(String contaOrigem, String contaDestino) {
+	public static Transacao criaTransacao() {
 		Transacao transacao = new Transacao();
 		
-		transacao.setContaDestino(contaDestino);
-		transacao.setContaOrigem(contaOrigem);
+		Conta contaOrigem = ContaCreator.criaConta(UsuarioCreator.criaUsuarioValido());
+		Conta contaDestino = ContaCreator.criaConta2(UsuarioCreator.criaUsuarioValido()); 
+		
+		transacao.setContaDestino(contaDestino.getNumero());
+		transacao.setContaOrigem(contaOrigem.getNumero());
 		transacao.setValor(new BigDecimal("1000"));
-		transacao.setUsuario(UsuarioCreator.criaUsuarioValido());
+		transacao.setUsuario(contaOrigem.getUsuario());
 		
 		return transacao;
 	}

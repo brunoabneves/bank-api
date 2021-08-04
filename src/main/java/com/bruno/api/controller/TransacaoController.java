@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-public class TransferenciaController {
+public class TransacaoController {
 
 	private UsuarioService usuarioService;
 	private TransacaoService transacaoService;
